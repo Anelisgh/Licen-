@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='acasa.css') }}">
+    <link rel="icon" href="https://img.icons8.com/pulsar-color/48/resume.png" type="image/x-icon">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {% endblock %}
+</head>
+
+<body>
+    {% block body %}
+    
+    {% with messages = get_flashed_messages()%}
+    {% if messages %}
+    <div id="flashMessage" class="flash">
+        {% for msg in get_flashed_messages() %}
+            <p> {{msg}} </p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+<div class="base">
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        <a href="/angajati"><img width="30" height="30" src="https://img.icons8.com/pulsar-color/48/edit-user.png" alt="angajati"/>Angajați</a>
+        <a href="/concedii"><img width="30" height="30" src="https://img.icons8.com/pulsar-color/48/day-view.png" alt="concedii"/>Concedii</a>
+        <a class="nohover"><img width="30" height="30" src="https://img.icons8.com/pulsar-color/48/company.png" alt="unitate"/>Unitate</a>
+        <div class="subnav">
+            <a href="/unitate/concedii">Concedii</a>
+            <a href="/unitate/varsta">Vârstă</a>
+            <a href="/unitate/vechime">Vechime</a>
+        </div>
+        <a href="/contact" id="contact"><img width="30" height="30" src="data:image/png;base64,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" alt="Contact"/>Contact</a>
+    </div>
+
+  <div id="navbutton">
+    <span onclick="openNav()">&#9776; </span>
+  </div>
+
+  <h1>{{ title }}</h1>
+
+    <div class="content">
+        <div class="color-selector">
+            <div id="colorSelector" class="dropdown">
+                <button class="dropbtn"><img width="30" height="30" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAE8ElEQVR4nO2Zf2gcRRTHV2urtpUa9Hbeu4QklfwhQUrgJLaQm3ep/aUoYjVgK01bVJBKfxnFaqvBWGgMxVIpaYPthgbT2x7+aKqgUrH/NVbBaAmYXZW2SpqKQlXESGmyMpv7MXu3d0nu9m4j9MFjmb293e9n5r15s7OKct2um3/G2PJ5AHwPIP8RkMYY8N8Z0AeI/FFFoZuUmW4M+RuAZGXxSwxpN2NUrcxUA+AtOQASPsaQfzJTR+VGgMhjapCWCXGBCqoRvS56/387KhPWNEtAAVIMkF9zGxUAfgqAmhQlNFvx0gAaAgzpEAP+S5aHT8P5NQY0rCKdFccs14wAULuqNtxVsHjGwksB6dfCRGf1vyAYaRX5YI+A26gg/xixMZSXeES6E5BfLpJ42xnw3xhbooocyJErV1Xka6ff+0iHkg9CfgEgQiKWlYKsaRYiNQDy89K9OyfPFf63mBAURbkBgK8G4A9ODgD0c/IGtnjvjDHemBoFuuh2TUDMYMAHpJE4riI9nQKn3TkfIveA3PO9vRfLNN08oEWNkW7dtPLxI8eGkiESLI9YWtTc23VyeG4mKN0jhdsVhrTZEYJIr2fvJeCj8T+OJs4dPvH9bZpuDOYrXHZZiGhruvndgdjg/MyOpKtJwWzRPAA66cgRoFddARBpGwMyxDFxTtPNVi/EuwHYHjUdYsQMJOXBZXGutrZ2TiYE36lMxbp188tiAmhRo98RBcgPSuFyNHG+qopuYcA/TYNocYgVpMEg1YmjNAJGUQF003CsbJH+TAkMc1lfRcXiW+3qLdUNxMjKVOwlfgR+yg8AVZ5xgA+JKTQzzENzAekLaUr+OgWANB7/YdyXEUD6SkrU7dnCOhi8/w4G9E9iqSIDJB9QagC1vGGR1Pv/ivVYNoB4tHybrtVXACYnL9C7ucQHAjTfXlfF88B3ADZJ8jotNJshf0+61znfAdQpJG9KPL2fVtSafAdgU0jeiWLGTzhXrbzDcZEfAG0dn12YLHndxDOkvRmUfgA88PCOK7mSN76M6MvZ834BdPUMWpXVK8ayJW9NzaqbAflHaTHf7iq+FACV1Svse4ujaG/apslvao7ktSuuc9mQW3wpADa3HLXql2y0j6J9733rZXHb08R/nrZwa80pvhQAsu9567Tc+6NieSCeF68JybVOzvW/nwA72/qkGYX3pMTz03mt+9MBiun1izdaWnTIan5qn7XqoZf+UNWlrKxs2QIAOiNdNy6/WM0ogPRCVibEI++XxavIt05LvF8AndrAD4B0VhYvXuSnLT4doBR1oLN7wKoLPTnqEM/Cz+UlvtQAQnyovlk+Nw7AN+Ut3muAJ9a1W5VVy6016950BagLrZXbY4zRhoLEew2QqLpVC1e6AsibXADh9QWLz7Yzly+A6HkBsaa5w24f6R1yEd9oPbvlnRHFK5P3RsWGbCEA6f78jmMZ4re+2ON4qS8cAKlL3p0WG7KHe42CAMSe6K62PitY0ZgUj+URq+VlPVkHFM8AWHih9LJcFMcgWVte6HEUMsVLm9irL85HDhE2G57Z7xghzWuAxJca8RFC7ONjeWS8UNF31662Hnn8NWvfwf6MENOixhmlmKZFjVe8KmRurunGrqICxGKDczTd+KYoAFHznNv3Ac+t+8Pzt2tR821NNy95JH5Y0839XbGfFngh8D/dAnLvri7QTAAAAABJRU5ErkJggg==" alt="Schimba tema">Schimbă tema</button>
+                <div class="dropdown-content">
+                    <a href="#" data-value="verzui">Verzui</a>
+                    <a href="#" data-value="default">Albastru</a>
+                    <a href="#" data-value="albastru">Mov</a>
+                    <a href="#" data-value="verde">Verde</a>
+                    <a href="#" data-value="rosu">Rosu</a>
+                    <a href="#" data-value="gri">Gri</a>
+                </div>
+            </div>
+        </div>
+        
+    
+        <h5><a href="/deconectare"><img width="48" height="48" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAACuklEQVR4nO2ZT2gTQRTGF3Lz4kHNzKSp9k+EEgRFUPCQmcRULAqlEUMLKlgP9eDBgyeRQkUrPaSIGK1Fs9NLu0uOUbwUD4Lgzavd1UBURBFErLWlUhiZpU3WsMVD3izdsh88BjYw8/1m3k5eXjQtVKhQoba0CGG7EaEPEaafMKFrmDDRetA1hNlHRNgjjDP7lJlHiGYwoV9hTG8aiwiljivZeR/MCxmIsG8IHYuCAiBCp+oLYPZBnoam5SMws+cjGKcoIrTmgnigQUrmaH1yxzy8orF0tgFAa6CTu19YuJ1vVj6CMFtdP+Vl0KndOdr8mT77fr9u2s+5Yf3mpi1aiaELEyLe3iv6c6M1XrYOKQeQ5rlh/2rVuFfohr06U7aOqgUw7WcqzPMNCNN6oxQAIm3cUSi+EpcuF51x49l0ubpTHQDwjicPnHXW6Ow+JcYL886zJ3NvY4EDwC6IQAGMF+Yd426IdO+Vk4EB4KYt7ky+EF2JBgQm7CfG9EhgALgHBML0R0sQfgNwaIj/Achrb3jkvrg4cg80zgzeFAinl12F5HdCUofBAdy3hw9RDQG8Uuj88KQYPDcBGqf7r8sUWlGeQoF/iflWNr9dvsiqXjdAYEqJPXGWwJhek2Mgi7nNFJhy2i+AgscPGhCAKKFXEWaWHFUCcI8AAZBtDq92R2AAsE/X6NB6W0WOwADejS1I86XZBdEWzzprtO89AZ5C9dYiITSlAmD09tP6Kfckc8AATc1d2ceUJwGy83MLjvmeZK4OMJAfAwZArEP27v2o9zu6+sTdqdewAI3uMf2i1Hxnn7hxq+I+oT/Tlc87NCjFYtldmLCiTCOov5hibRknfQbyY//svAzdsF9qKvW4/C7BDXtRxf2vm9ZKybQOaqo1Y9jd3LAqumkvwRi3l2S7vlS2k8rNhwq1zfQXwgfWw69i6MMAAAAASUVORK5CYII=" alt="Deconectare"/></a></h5>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='styling.js') }}"></script>
+<script src="{{ url_for('static', filename='form.js') }}"></script>
+<script src="{{ url_for('static', filename='histograma.js') }}"></script>
+    {% endblock %}
+</body>
+</html>
