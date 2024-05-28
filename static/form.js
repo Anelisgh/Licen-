@@ -1,7 +1,5 @@
 $(document).ready(function() {
-    
-    //CONCEDII:
-    // Pentru a-mi aparea data cerere pentru angajatul selectat:
+  
     $('#NumeAngajatM').change(function() {
         var angajat = $(this).val();
         var xhr = new XMLHttpRequest();
@@ -46,7 +44,6 @@ $(document).ready(function() {
                         select.append(opt);
                     }
                 } else {
-                    // Dacă nu există cereri, setați inputul la un șir gol
                     $('#dataCerere').val('');
                 }
             }
@@ -120,7 +117,7 @@ document.getElementById('adaugareConcedii').addEventListener('submit', function(
     }
 
     if (invalid) {
-        e.preventDefault(); // anuleaza trimiterea formularului
+        e.preventDefault(); 
         alert('Câmpurile obligatorii sunt necompletate!');
     }
     });
