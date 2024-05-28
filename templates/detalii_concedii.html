@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% if tip_concediu == 'Medical' %}
+    {% set title = 'Documente concedii medicale' %}
+{% elif tip_concediu == 'Odihna' %}
+    {% set title = 'Documente concedii de odihnă' %}
+{% else %}
+    {% set title = 'Documente concedii fără plată' %}
+{% endif %}
+{% block head %}
+{{ super() }} 
+<title>Documente concedii</title>
+{% endblock %}
+{% block body %}
+
+    {{ super() }} <!--Folosim super() pt ca block body sa functioneze si sa nu il inlocuiasca pe cel din base.html -->
+        
+    <div class="table-container">
+        <table>
+            <tr>
+                {% if tip_concediu == 'Medical' %}
+                    <th>Data Cerere</th>
+                    <th>Data Început</th>
+                    <th>Data Sfârșit</th>
+                    <th>Eliberat De</th>
+                    <th>Diagnostic</th>
+                    <th>Accident Munca</th>
+                {% else %}
+                    <th>Data Cerere</th>
+                    <th>Data Început</th>
+                    <th>Data Sfârșit</th>
+                {% endif %}
+            </tr>
+            {% for concediu in concedii %}
+            <tr>
+                <td>{{ concediu[0] }}</td>
+                <td>{{ concediu[1] }}</td>
+                <td>{{ concediu[2] }}</td>
+                {% if tip_concediu == 'Medical' %}
+                    <td>{{ concediu[3] }}</td>
+                    <td>{{ concediu[4] }}</td>
+                    <td>{{ concediu[5] }}</td>
+                {% endif %}
+            </tr>
+            {% endfor %}  
+        </table>
+    </div>
+    
+
+    <script src="{{ url_for('static', filename='styling.js') }}"></script>
+{% endblock %}

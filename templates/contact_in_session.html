@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% set title = 'Contact' %}
+{% block head %}
+{{ super() }} 
+<title>Contact</title>
+{% endblock %}
+{% block body %}
+
+    {{ super() }}
+    
+    <div class="contact">
+        <form action="/contact" method="POST" id="contact-form">
+            <fieldset>
+                <label for="email">Adresa de e-mail (pentru a primi răspunsul)</label>
+                <input type="email" id="email" name="email">
+                <label for="mesaj">Cu ce vă putem ajuta?</label>
+                <textarea id="mesaj" name="mesaj"></textarea>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="button-singur">
+                <button class="buton" type="submit" name="Trimitere">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAAAsTAAALEwEAmpwYAAANjklEQVR4nO1ceXRU1Rl/SOmxVXuqknn3TkI2IQHCIgQXJHl3JgQTtoBsAYJsAsqOLLJEDApCDiEgOyHJexCTvGGqIHLUHqx2ca3aAhVJ3qMe6mmxaq2VgmIV83q+SQLD5N47700myyTzO+f7h9yF97v3ft93v+9+IwhhhBFGGGGEEUYYYYQRRhhhhBFGGGGEEQYTUVH3/sxmS4m/vct9dnarMIIOW2RKHxGRcoSlSwgTA0TE5AzGZHTwZwvjKiIinX0RJm6ESU098b6CMVlyrUcYQUGEPfU+hKVjPOKviXTFbk9JCM7M7RyiKDkRJq/7J91HkLSppf/vIQ2EpKEikt60TPzVBSBHW/obQhEdbNgxSsTS+wETf9UgS2Ut/TGhhBtEUZqAEDnVWOK9VNDSlv6oUMANCJHx4D4Gjfg6CRthLpI7ISRNFRHRgk183X3gI/787RQ9e/b8KRCPsPTXIKmZf4Q9IBMQxSE32bC0WGQRZnWHI+lyRIRzrojI/2h/hzuD9/wHVa2HcuTcL4X2hogIcjMQjzD5NIjG9SyEIWyYTGK0+VwQxnfMyzNuUFz6WFnVTygu3VBU/b+yqqUK7QG33Xb3L0QsrRQR+XeQdftL0dEpt8IcCEkqrQ3GjlJZ1SfLLu20h3gvkVX9iNCWgTHpLGKyTkTSf6yRK13x06YGIZIPXlPtTMmdWHMsWVl+3pf4qwvg0kqEtghRHGgD4hEmFyyqk09NxHYu+EY4bXaSTmvbJXqIUVR2mkp+rVS3rUgpxoOiESLbRUS+tUY8eVfE5G0TC3QyIsJ5h++8MCetvTN9EZN8WdW+LSs7eZPQFiCKJLaWeOmyJR0OsR07mWvq4oVIBcbJP/edG0iMjcv8ktZn3hKZs/u1Y0Kow2ZLiRcxKUJY+sEq8aKYmibayUTvBArDHvwABtx37pIXqm6RVX3xhi3HqeRju9PYsf999gIc0mYLoQpRJL0guGXCWF5vOLF0TBRT7xYE8hMwoib6fA7hZ++5Dx4+c7uiautkl/YVEPngzK3UvncPnMFTPzUH3Fqk0BazT6ih/AjEY+xMhjEQSolAmLxm4pS80blzKq6fu9StRwDxiqp97U3mgHumUftPnfUMR/3o7wptN/tEvIgnboSkHvXjIEQGiIh84pd8TIogTAF9iis/FhWXlq+o2je+RG7f/56B7Q7qGPnbfsteAFXLFUIBokgcVrNPnnAAkop9vRWMpTmsUIHXrr8simQ6tC8p/yhGdunbZZd2mUXk3MUl1HF69hrH2/2G7K7qLbRujO+IkFRp0bCCB7QLXFHvkWJiyI0IkVKzIYUyd3UcEK+o2nc8EkEcgxdQxxqbvZ5Nvks/J7R2YExmmydfuiRiUuitr6+NMyhaxOQ9EyrnpemztmQMH73mVHrm0ppps7YbRQc/5JIPF6yoLunU8R5f/yLPAG8TWjtqPRzij/wLCEkbwaiyc7h+Yz81SUnjSgv3vOlO6jPhur/dde90o6Siiknk8txD1DHj4odx+8mV1WlCawdC5GmOjv8KISmvPghGQQfw2+uMMJN8e6Tj0iOLit8qLj9TMzB1NrUNkMwicvio1dQ+mcMf4xnfr4uKPugktHbAsz7kEzIWMflCxGQ1RDa5UU9EDvs7PUm9xl7YsustDylZY9Yy281ZUEQlsrSy2rij2whqn0dXVfBuvxVCSwGMIcapOSImG0TRMRx2qt9FQKBipEqEpHmQROG1x5h0NxNSgB26v6xWv8+av5fZDm6yG7e9TiVy3aZXqH0iowYbe5VTHP1fnS00N4A4eBFA2dEHgzWHzZMM4YcU7FFOY/qc7VfJWPPkEc+/sdpPfDCfSeSEnI3UPqmOeTzD/X2zZsFqkyBkNagO5i7DjkGNm4WYCil07TbyOs+kYMcbHmPJak/S5nvUDIvMXn0nWFJZdernuNAcAONYmwQhX/kjxobJrEDnQSZDCvcMesjY7hUU26OcMHr5eDze0qffJK4a2bLrTWbfrXve4S3AwuAyTSMEdLaVJAiS7gpkLowdgxAi5/2NDwbW2yWEXQ27m9U+vuswo944s2TGnJ3Uvv0HPMjtBxe8pkz7FfoP6zYgf0dg80l+QwpwQVqw9EADEh4Yv47ZJzIqzVi74RiXRBA4UbT+OTMKOcZXPxF85mvJSEVY+sxqLN6GpSFW54oxGVJI6j2e6r3Mf1Tm9oO4jj/yd5eeMOyRdMO9oeBV9gK4tCeDTr7NliZafGXwmm9s3SywyZACGbzAo+N9Ccjb+JLHRWT1Gzdpg1/yQeBU0fonJI6CEAOzX0ll1YCgLwD45qZ2PCYvN8bbQUgairCDa9AhJJydkw9+doOPL9z9NvPSBJLqnGeUVrA9Hm8ZfP8S6hijxuXx+p03DIN75wmUmFc5pNQgJL0A8fdGTNEhrtvwJ7Hdwc0BxMZlGity3dSP33fgL0bf/pOZfXv3zTb2KidNkV9SfsaIicugjrN63WGO/tf2Ck0BEZE/8N/CJwcc85gxd0/8nQOmVPk7Xf2Sc4zC3XSvBU6DI30hs2/cHcOMgl1vmCIfZOUTz1PHiY693ygu/4jZ74BaPVRoCtR6PjyCpA+tqh7IPq1df7S4d99sbiDNN6RAE9DrrL5wA87lhIxpkjX2CepY6ZlL2f1U/aKinLuxSRYAY0eGCRvwI6T3OJFLwTv7tGhF2ffRMUMMKyEFhSILGcayXh5ZuN8S+WBgE7qPpo61aPlBXr/nhKaEiMk+E4sAp+EziNf49q/PPpWWV30HRtTfOAmJo4x1+S9zyYJAWWQXtscDdwEr5IOs33ycvhkincbu0j+zF+CQNq1JFwAMJULSMrMv0UQk/RpytQcqzybJLq1MUfUfdpX8yRgkPWxYDSkoFNm29x1P3Ic1Rgp5xLTH4y2Tpm2mjgd5BM7uv1JUUd1ZaL4HUtIrZhYhMirtyuTpBTXgVcBuhV1tNaSgUARSiP365zDHgEQ5b7fyhDXuzId3cRZA/73Q3BDt0kgRSX83sxBdE0Ya9sg0I5CQgtLgY6uNtCGLua5q/jO/C4h8OFWscQt2crwoVVshtATqoqFF/lKCZkIKm7Zy3tZ4ycQpbPsBehpcyEDI5yVt+tw5kduvxF2VKLQkPBFLLH0YCPngv+81eUFauqqS+TgKBAgMlHyQFIZ9gkVn7369WmgdSO4ESRlsd3Kjl95pwCkzCrlxFcVLIADWJeZ+5njDR61pFPmQF2DFkHjemOzSNwutCeD5xMZnvsUjPyYmw1iVx77SK5RngQndR3G9ppKKM41agCWPldPtV7eR3IyZ4qpuZKaviYCjnJPtkfTTMHTkStPE7H/2NPNRLEiPpDEGuLeNIR8kY/gK6vgjRudy1I/2hdttdBRaK3CkNIf2Ud17jjFFiqxqRsaw5eyTFJdh2njzBNxeVt54xeNu3gLIQmuv32J5SBu30p+BKF6SM30L14Y8tvZXjSYfJPepo0abrftCWHqX9nFTZ27jkrJstYvr8fAuRlZl7ISnDKt1X/Cgd5f79M1CawdCUi7t4+7sP/ki6+OeLvyNwQvUDctaFTTyQXr2GkudZ97i0tCv+6qrdKF94I/rNx9fLru0C94fBrVWrGikx+MZ+JAnYRIs8iGnzFJxvHjUAVWbI4QKWJUqol2aWVJZZfcE6yCrdfCU0TUxi0k+GO+dxR8EdfeDKmzzdV8iJrupC4DI4fo2skvXIOvFIh+yUWYMt1UJpO5LVvU/CqEEhEgmnVjpIjxBEQRBWLbG/SzCDqY64D0fD1TafN3Xde98sHSRugiIZMLvMMTGD2Xmhac+xPeYApW5i4qZl7sQr/tqCNZbflBPmFOmBG87zcaLrAqz7msiu+5LcWl/E0IRYHAZJ+C8iCRqBXqX6HRjRzE/MxaoBFr3pbi0Z4RQBO9WjBjC8sN3lnzgedM/ZOgyj7Hce4D9wpkl8L6ozdZ9Wb0VI4pA4Rzt9RuEjSHl6N02sccDxpp1RywtAISv22zdl9VbMaJ4PawHsLPn72P0cRgjH8g1dRpCsu4rGBBFZ5KZnyDIGvsEkwRQPby+Zk5DoHVfikubKIQ64AEvj0B7pPNfe+SGr5696738nyD+acjO2cR8ytJq6r6atixVOkd1SRH5Bn6sA27FfvT3WTMniXUa4KEurT2otxav+2oO2O2Db4eqmWsFH9IlEUvPRUSRrvB3WdW3ML0QVfu2tEKLh8IPhJ2mnsWAt1R/qlpt3VcLoUPtW9Lx16X1FPWsg7kALj3PpzqzyMxpSEjMMlasdTPrvvoNmNIydV+tEW630VFW9S8pRHxMe4Fs9jSAbYiNH0r92+RpBRz3Uz8ptDcoql7ZwH1U9RH8ny6Q9lv8oSezdV9PCe0Nslqd7XMJetFMPzgN2G7ONlxVT935dV+yqzqgEtuQhtt9+qeySztatwNPW0mAWD0NvJ8qaLK6r1BByQtVtwTa18xp6JaYxb89q/q+4H5RO8NtnNMAuWd/BdtNVvfV3mC3pyTExGUU9Oqb/U+o9YI3R37jRk1Z99WeUarqI0C3c8lvjrqv9oyKik9ulV16EXcBmqHuq92jlHEamrXuq72j1K1HyKp2yOfy9UpL/7/aHWRVG6O49NcUl/481DO39P8njDDCCENoHvwfjgVpo1nDw5YAAAAASUVORK5CYII=">
+                    Trimitere
+                </button>
+            </div>
+            </fieldset>
+        </form>
+    </div>
+ 
+    <script src="{{ url_for('static', filename='styling.js') }}"></script>
+{% endblock %}   

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% set title = 'Histograma Vechime' %}
+{% block head %}
+<title>Histograma Vechime</title>
+{{ super() }} 
+{% endblock %}
+{% block body %}
+
+    {{ super() }} <!--Folosim super() pt ca block body sa functioneze si sa nu il inlocuiasca pe cel din base.html -->
+        
+    <div class="chart">
+        <canvas id="myChartVechime"></canvas>
+    </div>
+    
+    <script src="{{ url_for('static', filename='styling.js') }}"></script>
+    <script src="{{ url_for('static', filename='histograma.js') }}"></script>
+{% endblock %}

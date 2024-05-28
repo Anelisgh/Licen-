@@ -1,0 +1,249 @@
+{% extends 'base.html' %}
+{% set title = 'Angajați' %}
+{% block head %}
+{{ super() }} 
+<title>Angajați</title>
+<script>
+    $(document).ready(function() {
+    $("#adaugareAngajat, #modificareAngajat, #stergereAngajat").hide();
+    
+    var clickedClass = "clicked";
+
+    function resetStyles() {
+        $("#adaugare, #modificare, #stergere").removeClass(clickedClass);
+    }
+    
+    $("#adaugare").click(function() {
+        resetStyles();
+        $("#modificareAngajat, #stergereAngajat").hide();
+        $("#adaugareAngajat").toggle();
+        if ($("#adaugareAngajat").is(":visible")) {
+            $(this).addClass(clickedClass);
+        }
+    });
+
+    $("#modificare").click(function() {
+        resetStyles();
+        $("#adaugareAngajat, #stergereAngajat").hide();
+        $("#modificareAngajat").toggle();
+        if ($("#modificareAngajat").is(":visible")) {
+            $(this).addClass(clickedClass);
+        }
+    });
+    
+    $("#stergere").click(function() {
+        resetStyles();
+        $("#adaugareAngajat, #modificareAngajat").hide();
+        $("#stergereAngajat").toggle();
+        if ($("#stergereAngajat").is(":visible")) {
+            $(this).addClass(clickedClass);
+        }
+    });
+    $('#NumeModificare').change(function() {
+        var nume = $(this).val();
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/get_date_angajat?nume=' + nume, true);
+        xhr.onload = function() {
+            if (this.status == 200) {
+                var date_angajat = JSON.parse(this.responseText);
+                $('#numeM').val(date_angajat['nume'] || '');
+                $('#dataNastereM').val(date_angajat['dataNastere'] || '');
+                $('#functieM').val(date_angajat['functie'] || '');
+                $('#dataAngajareM').val(date_angajat['dataAngajare'] || '');
+                $('#vechimeAnterioaraM').val(date_angajat['vechimeAnterioara'] || '');
+                $('#salariuM').val(date_angajat['salariu'] || '');
+                $('#serie_actIdentitateM').val(date_angajat['serie_actIdentitate'] || '');
+                $('#CNPM').val(date_angajat['CNP'] || '');
+                $('#dataEmitere_actIdentitateM').val(date_angajat['dataEmitere_actIdentitate'] || '');
+                $('#dataExpirare_actIdentitateM').val(date_angajat['dataExpirare_actIdentitate'] || '');
+            }
+        }
+        xhr.send();
+    });
+});
+</script>
+
+{% endblock %}
+
+{% block body %}
+
+    {{ super() }} <!--Folosim super() pt ca block body sa functioneze si sa nu il inlocuiasca pe cel din base.html -->   
+    <div class="table-container">
+        <table>
+            <tr>
+                <th id="adaugare">Adăugare</th>
+                <th id="modificare">Modificare</th>
+                <th id="stergere">Ștergere</th>
+            </tr>
+        </table>
+    </div>
+ 
+    <!-- Formularul pentru "Adaugare"-->
+    <div id="adaugareAngajat">
+        <form action="/angajati" method="post" id="angajat-form">
+            <fieldset>
+                <label for="numeA">Nume:</label>
+                <input type="text" id="numeA" name="numeA"><br>
+
+                <label for="dataNastereA">Data naștere:</label>
+                <input type="date" id="dataNastereA" name="dataNastereA"><br>
+                
+                <label for="functieA">Functie:</label>
+                <select id="functieA" name="functieA">
+                    <option value="Director">Director</option>
+                    <option value="Secretara">Secretara</option>
+                    <option value="Consilier">Consilier</option>
+                    <option value="Muncitor calificat">Muncitor calificat</option>
+                    <option value="Ingrijitor">Ingrijitor</option>
+                    <option value="Portar">Portar</option>
+                    <option value="Conducator auto">Conducator auto</option>
+                    <option value="Traducator">Traducator</option>
+                </select><br>
+
+                <label for="dataAngajareA">Data Angajarii:</label>
+                <input type="date" id="dataAngajareA" name="dataAngajareA"><br>
+
+                <label for="vechimeAnterioaraA">Vechime anterioara:</label>
+                <input type="number" id="vechimeAnterioaraA" name="vechimeAnterioaraA"><br>
+
+                <label for="salariuA">Salariu:</label>
+                <input type="number" id="salariuA" name="salariuA"><br>
+
+                <label for="serie_actIdentitateA">Seria si nr.:</label>
+                <input type="text" id="serie_actIdentitateA" name="serie_actIdentitateA"><br>
+                
+                <label for="CNPA">CNP:</label>
+                <input type="number" id="CNPA" name="CNPA"><br>
+          
+                <label for="dataEmitere_actIdentitateA">Data de emitere:</label>
+                <input type="date" id="dataEmitere_actIdentitateA" name="dataEmitere_actIdentitateA"><br>
+
+                <label for="dataExpirare_actIdentitateA">Data de expirare:</label>
+                <input type="date" id="dataExpirare_actIdentitateA" name="dataExpirare_actIdentitateA"><br>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="button-container">
+                    <button class="buton" type="reset">
+                        <img src="https://img.icons8.com/pulsar-color/48/delete.png" alt="delete"/>
+                        Resetează
+                    </button>
+                    <button class="buton" type="submit" name="adaugare">
+                        <img src="https://img.icons8.com/pulsar-color/48/save.png" alt="save"/>
+                        Adaugă
+                    </button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+    <!-- Formularul pentru "Modificare"-->
+    <div id="modificareAngajat">
+        <form action="/angajati" method="post" id="angajat-form">
+            <fieldset>
+                <p>Modificați doar unde este necesar</p>
+                <label for="Angajat">Selectează angajatul:</label>
+                <select name="NumeModificare" id="NumeModificare">
+                    <option value=""></option>
+                    {% for nume in Angajati %}
+                    <option value="{{ nume[0] }}">{{ nume[0] }}</option>
+                    {% endfor %}
+                </select><br>
+
+                <label for="numeM">Nume</label>
+                <input type="text" id="numeM" name="numeM"><br>
+                <label for="dataNastereM">Data naștere</label>
+                <input type="date" id="dataNastereM" name="dataNastereM"><br>
+                <label for="functieM">Functie</label>
+                <select id="functieM" name="functieM">
+                    <option value="Director">Director</option>
+                    <option value="Secretara">Secretara</option>
+                    <option value="Consilier">Consilier</option>
+                    <option value="Muncitor calificat">Muncitor calificat</option>
+                    <option value="Ingrijitor">Ingrijitor</option>
+                    <option value="Portar">Portar</option>
+                    <option value="Conducator auto">Conducator auto</option>
+                    <option value="Traducator">Traducator</option>
+                </select><br>
+                <label for="dataAngajareM">Data Angajarii</label>
+                <input type="date" id="dataAngajareM" name="dataAngajareM"><br>
+                <label for="vechimeAnterioaraM">Vechime anterioara</label>
+                <input type="number" id="vechimeAnterioaraM" name="vechimeAnterioaraM"><br>
+                <label for="salariuM">Salariu</label>
+                <input type="number" id="salariuM" name="salariuM"><br>
+
+                <label for="serie_actIdentitateM">Seria si nr.</label>
+                <input type="text" id="serie_actIdentitateM" name="serie_actIdentitateM"><br>
+
+                <label for="CNPM">CNP</label>
+                <input type="number" id="CNPM" name="CNPM"><br>
+
+                <label for="dataEmitere_actIdentitateM">Data de emitere</label>
+                <input type="date" id="dataEmitere_actIdentitateM" name="dataEmitere_actIdentitateM"><br>
+                <label for="dataExpirare_actIdentitateM">Data de expirare</label>
+                <input type="date" id="dataExpirare_actIdentitateM" name="dataExpirare_actIdentitateM"><br>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="button-container">
+                    <button class="buton" type="reset">
+                        <img src="https://img.icons8.com/pulsar-color/48/delete.png" alt="delete"/>
+                        Resetează
+                    </button>
+                    <button class="buton" type="submit" name="modifica">
+                        <img width="48" height="48" src="https://img.icons8.com/pulsar-color/48/save.png" alt="save"/>
+                        Modifică
+                    </button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+    <!-- Formularul pentru "Stergere"-->
+    <div id="stergereAngajat">
+        <form action="/angajati" method="post" id="angajat-form">
+            <fieldset>
+                <label for="Angajat">Selectează angajatul:</label>
+                <select name="NumeAngajat" id="NumeAngajat">
+                    {% for nume in Angajati %}
+                    <option value="{{ nume[0] }}">{{ nume[0] }}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="button-singur">
+                    <button class="buton" type="submit" name="sterge" onclick="return confirm('Ești sigur că vrei să ștergi angajatul ' + document.getElementById('NumeAngajat').value + '?')">
+                        <img src="https://img.icons8.com/pulsar-color/48/delete.png" alt="submit"/>
+                        Șterge
+                    </button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+    <div class="table-container">
+        <table id="myTable">
+            <tr>
+                {% set column_names = ['Nume si Prenume', 'Data nastere', 'Functie', 'Data angajare', 'Vechime in institutie', 'Vechime anterioara', 'Vechime totala', 'Salariu', 'Seria si Nr.', 'CNP', 'Data Emitere', 'Data Expirare'] %}
+                {% for column in column_names %}
+                    <th class="titluTabel">{{ column }}</th>
+                {% endfor %}
+            </tr>
+            {% for angajat in lista_angajati %}
+            <tr id="{{ angajat[0] }}">
+                <td>{{ angajat[1] }}</td>
+                <td>{{ angajat[5] }}</td>
+                <td>{{ angajat[8] }}</td>
+                <td>{{ angajat[9] }}</td>
+                <td>{{ angajat[10] }}</td>
+                <td>{{ angajat[11] }}</td>
+                <td>{{ angajat[12] }}</td>
+                <td>{{ angajat[13] }}</td>
+                <td>{{ angajat[3] }}</td>
+                <td>{{ angajat[4] }}</td>
+                <td>{{ angajat[6] }}</td>
+                <td>{{ angajat[7] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <script src="{{ url_for('static', filename='styling.js') }}"></script>
+    <script src="{{ url_for('static', filename='form.js') }}"></script>
+{% endblock %}

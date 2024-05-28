@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% block head %}
+    <title>Contact</title>
+    <link rel="icon" href="https://img.icons8.com/pulsar-color/48/resume.png" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='acasa.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+    {% endblock %}
+</head>
+<body>
+    {% block body %}
+    <h1>Contact</h1>
+    {% with messages = get_flashed_messages()%}
+        {% if messages %}
+        <div id="flashMessage" class="flash">
+            {% for msg in get_flashed_messages() %}
+                <p> {{msg}} </p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %} 
+        <div class="contact">
+            <form action="/contact" method="POST" id="contact-form">
+                <fieldset>
+                    <label for="nume">Numele dumneavoastră</label>
+                    <input type="text" id="nume" name="nume">
+                    <label for="email">Adresa de e-mail (pentru a primi răspunsul)</label>
+                    <input type="email" id="email" name="email">
+                    <label for="mesaj">Cu ce vă putem ajuta?</label>
+                    <textarea id="mesaj" name="mesaj"></textarea>
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="button-singur">
+                    <button class="buton" type="submit" name="Trimitere">
+                        <img src="data:image/png;base64,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">
+                        Trimitere
+                    </button>
+                </div>
+                </fieldset>
+            </form>
+        </div>
+
+    {% endblock %}
+</body>
+</html>

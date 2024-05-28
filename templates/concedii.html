@@ -1,0 +1,237 @@
+{% extends 'base.html' %}
+{% set title = 'Concedii' %}
+{% block head %}
+{{ super() }} 
+<title>Concedii</title>
+
+<script> // 
+    $(document).ready(function() {
+    // Initially hide all forms
+    $("#adaugareConcedii, #modificareConcedii, #stergereConcedii").hide();
+
+    // Define the class for the clicked state
+    var clickedClass = "clicked";
+
+    // Reset styles for all headers
+    function resetStyles() {
+        $("#adaugare, #modificare, #stergere").removeClass(clickedClass);
+    }
+
+    // Toggle visibility on click
+    $("#adaugare").click(function() {
+        resetStyles();
+        $("#modificareConcedii, #stergereConcedii").hide();
+        $("#adaugareConcedii").toggle();
+        if ($("#adaugareConcedii").is(":visible")) {
+            $(this).addClass(clickedClass);
+        }
+    });
+
+    $("#modificare").click(function() {
+        resetStyles();
+        $("#adaugareConcedii, #stergereConcedii").hide();
+        $("#modificareConcedii").toggle();
+        if ($("#modificareConcedii").is(":visible")) {
+            $(this).addClass(clickedClass);
+        }
+    });
+    
+    $("#stergere").click(function() {
+        resetStyles();
+        $("#adaugareConcedii, #modificareConcedii").hide();
+        $("#stergereConcedii").toggle();
+        if ($("#stergereConcedii").is(":visible")) {
+            $(this).addClass(clickedClass);
+        }
+    });
+});
+</script>
+{% endblock %}
+
+{% block body %}
+
+    {{ super() }} <!--Folosim super() pt ca block body sa functioneze si sa nu il inlocuiasca pe cel din base.html -->
+
+    <div class="table-container">
+        <table>
+            <tr>
+                <th id="adaugare">Adăugare</th>
+                <th id="modificare">Modificare</th>
+                <th id="stergere">Ștergere</th>
+            </tr>
+        </table>
+    </div>
+ 
+    <!-- Formularul pentru "Adaugare"-->
+    <div id="adaugareConcedii">
+        <form action="/concedii" method="post" id="angajat-form">
+            <fieldset>
+                <label for="Angajat">Selectează angajatul:</label>
+                <select name="NumeAngajatA" id="NumeAngajatA">
+                    {% for nume in Angajati %}
+                    <option value="{{ nume[0] }}">{{ nume[0] }}</option>
+                    {% endfor %}
+                </select><br>
+
+                <label for="tipConcediuA">Tip concediu:</label>
+                <select id="tipConcediuA" name="tipConcediuA">
+                    <option value="Odihna">Odihna</option>
+                    <option value="Medical">Medical</option>
+                    <option value="Fara plata">Fara plata</option>
+                </select><br>
+
+                <label for="dataCerereA">Data cerere:</label>
+                <input type="date" id="dataCerereA" name="dataCerereA"><br>
+
+                <label for="dataInceputA">De la:</label>
+                <input type="date" id="dataInceputA" name="dataInceputA"><br>
+
+                <label for="dataSfarsitA">Până la:</label>
+                <input type="date" id="dataSfarsitA" name="dataSfarsitA"><br>
+
+                <p>Completați numai în cazul unui concediu medical:</p>
+
+                <label for="eliberatDeA">Eliberat de:</label>
+                <input type="text" id="eliberatDeA" name="eliberatDeA"><br>
+                
+                <label for="diagnosticA">Diagnostic:</label>
+                <input type="text" id="diagnosticA" name="diagnosticA"><br>
+          
+                <label for="accidentMuncaA">Accident de munca:</label>
+                <select id="accidentMuncaA" name="accidentMuncaA">
+                    <option value="">Nu se aplică</option>
+                    <option value="Da">Da</option>
+                    <option value="Nu">Nu</option>
+                </select><br>
+
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="button-container">
+                    <button class="buton" type="reset">
+                        <img src="https://img.icons8.com/pulsar-color/48/delete.png" alt="delete"/>
+                        Resetează
+                    </button>
+                    <button class="buton" type="submit" name="adaugare">
+                        <img src="https://img.icons8.com/pulsar-color/48/save.png" alt="save"/>
+                        Adaugă
+                    </button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+    <!-- Formularul pentru "Modificare"-->
+    <div id="modificareConcedii">
+        <form action="/concedii" method="post" id="angajat-form">
+            <fieldset>
+                <p>Modificați doar unde este necesar</p>
+                <label for="Angajat">Selectează angajatul:</label>
+                <select name="NumeAngajatM" id="NumeAngajatM">
+                    <option value=""></option>
+                    {% for nume in Angajati %}
+                    <option value="{{ nume[0] }}">{{ nume[0] }}</option>
+                    {% endfor %}
+                </select><br>
+
+                <label for="Cerere">Selectează cererea:</label>
+                <select name="Cerere" id="Cerere">
+                </select><br>
+                
+                <label for="tipConcediuM">Tip concediu:</label>
+                <select id="tipConcediuM" name="tipConcediuM">
+                    <option value="Odihna">Odihna</option>
+                    <option value="Medical">Medical</option>
+                    <option value="Fara plata">Fara plata</option>
+                </select><br>
+
+                <label for="dataCerereM">Data cerere:</label>
+                <input type="date" id="dataCerereM" name="dataCerereM"><br>
+
+                <label for="dataInceputM">De la:</label>
+                <input type="date" id="dataInceputM" name="dataInceputM"><br>
+
+                <label for="dataSfarsitM">Până la:</label>
+                <input type="date" id="dataSfarsitM" name="dataSfarsitM"><br>
+
+                <p>Completați numai în cazul unui concediu medical:</p>
+
+                <label for="eliberatDeM">Eliberat de:</label>
+                <input type="text" id="eliberatDeM" name="eliberatDeM"><br>
+                
+                <label for="diagnosticM">Diagnostic:</label>
+                <input type="text" id="diagnosticM" name="diagnosticM"><br>
+          
+                <label for="accidentMuncaM">Accident de munca:</label>
+                <select id="accidentMuncaM" name="accidentMuncaM">
+                    <option value="">Nu se aplică</option>
+                    <option value="Da">Da</option>
+                    <option value="Nu">Nu</option>
+                </select><br>
+
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="button-container">
+                    <button class="buton" type="reset">
+                        <img src="https://img.icons8.com/pulsar-color/48/delete.png" alt="delete"/>
+                        Resetează
+                    </button>
+                    <button class="buton" type="submit" name="modifica">
+                        <img width="48" height="48" src="https://img.icons8.com/pulsar-color/48/save.png" alt="save"/>
+                        Modifică
+                    </button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+    <!-- Formularul pentru "Stergere"-->
+    <div id="stergereConcedii">
+        <form action="/concedii" method="post" id="angajat-form">
+            <fieldset>
+                <label for="Angajat">Selectează angajatul:</label>
+                <select name="NumeAngajatS" id="NumeAngajatS">
+                    <option value=""></option>
+                    {% for nume in Angajati %}
+                    <option value="{{ nume[0] }}">{{ nume[0] }}</option>
+                    {% endfor %}
+                </select><br>
+    
+                <label for="dataCerere">Selectează cererea:</label>
+                <select name="dataCerere" id="dataCerere">
+                </select><br>
+
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="button-singur">
+                    <button class="buton" type="submit" name="sterge" onclick="return confirm('Ești sigur că vrei să ștergi concediul ' + document.getElementById('dataCerere').value + ' pentru ' + document.getElementById('NumeAngajatS').value + '?')">
+                        <img src="https://img.icons8.com/pulsar-color/48/delete.png" alt="submit"/>
+                        Șterge
+                    </button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    
+    
+
+    <div class="table-container">
+        <table id="myTableC">
+            <tr>
+                    <th>Nume angajat</th>
+                    <th>Odihna</th>
+                    <th>Medical</th>
+                    <th>Fara plata</th>
+                    <th>Zile rămase</th>
+            </tr>
+            {% for angajat in lista_angajati %}
+            <tr id="{{ angajat[0] }}">
+                <td>{{ angajat[1] }}</td>
+                <td><a href="{{ url_for('detalii_concedii', id_angajat=angajat[0], tip_concediu='Odihna') }}">{{ concedii_angajati[angajat[0]][0] }}</a></td>
+                <td><a href="{{ url_for('detalii_concedii', id_angajat=angajat[0], tip_concediu='Medical') }}">{{ concedii_angajati[angajat[0]][1] }}</a></td>
+                <td><a href="{{ url_for('detalii_concedii', id_angajat=angajat[0], tip_concediu='Fara plata') }}">{{ concedii_angajati[angajat[0]][2] }}</a></td>
+                <td>{{ concedii_angajati[angajat[0]][3] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div> 
+
+    <script src="{{ url_for('static', filename='styling.js') }}"></script>
+    <script src="{{ url_for('static', filename='form.js') }}"></script>
+{% endblock %}
